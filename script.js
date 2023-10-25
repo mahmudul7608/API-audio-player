@@ -13,22 +13,23 @@ let songIndex = 2;
 
 loadSong(songs[songIndex]);
 
-function loadSong(songs) {
-  title.innerText = songs;
-  audio.src = `songs/${songs}.mp3`;
-  cover.src = `images/${songs}.jpg`;
+function loadSong(song) {
+  title.innerText = song;
+  audio.src = `songs/${song}.mp3`;
+  cover.src = `images/${song}.jpg`;
 }
 
 function playSong() {
   musicContainer.classList.add("play");
-  playBtn.querySelector("i.fa-solid").classList.remove("fa-play");
-  playBtn.querySelector("i.fa-solid").classList.add("fa-pause");
+  playBtn.querySelector("i.fas").classList.remove("fa-play");
+  playBtn.querySelector("i.fas").classList.add("fa-pause");
   audio.play();
 }
+
 function pauseSong() {
   musicContainer.classList.remove("play");
-  playBtn.querySelector("i.fa-solid").classList.add("fa-play");
-  playBtn.querySelector("i.fa-solid").classList.remove("fa-pause");
+  playBtn.querySelector("i.fas").classList.remove("fa-pause");
+  playBtn.querySelector("i.fas").classList.add("fa-play");
   audio.pause();
 }
 
@@ -42,17 +43,20 @@ function prevSong() {
 
   playSong();
 }
+
 function nextSong() {
   songIndex++;
+
   if (songIndex >= songs.length) {
     songIndex = 0;
   }
   loadSong(songs[songIndex]);
+
   playSong();
 }
 
-function updateProgress() {
-  const { duration, currentTime } = audio;
+function updateProgress(e) {
+  const { duration, currentTime } = e.srcElement;
   const progressPercent = (currentTime / duration) * 100;
   progress.style.width = `${progressPercent}%`;
 }
@@ -82,4 +86,4 @@ audio.addEventListener("timeupdate", updateProgress);
 
 progressContainer.addEventListener("click", setProgress);
 
-audio.addEventListener("ended", nextSong);
+nextBtn.addEventListener("click", nextSong);
